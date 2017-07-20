@@ -7,6 +7,26 @@ Project Description
 -------------------
 Script to download books from www.allitebooks.com
 
+Project Instructions
+--------------------
+The following dependencies are required:
+
+* Python
+* Pip
+* Virtualenv (via pip)
+
+In a fresh terminal, navigate to the directory you want to store the pdf files in.  Then, execute
+the following commands:
+
+.. code-block:: bash
+
+   $ virtualenv allitebook
+   $ source allitebook/bin/activate
+   $ git clone https://www.github.com/pchan37/allitebook
+   $ cd allitebook
+   $ pip install requirements.txt
+   $ python Allitebook.py
+
 Changelog
 ---------
 

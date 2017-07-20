@@ -27,8 +27,7 @@ class AllitebookDownloader(object):
         """
         self.config = self._initialize_config()
         self.blacklist = self._initialize_blacklist()
-        self.homepage = homepage
-        self.total_number_of_pages = self._get_adjusted_total_pages(self.homepage)
+        self.total_number_of_pages = self._get_adjusted_total_pages(homepage)
         signal.signal(signal.SIGINT, self._save_progress)
 
     def _initialize_config(self):

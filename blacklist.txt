@@ -1,2 +1,4 @@
 http://www.allitebooks.com/building-isomorphic-javascript-apps/
 http://www.allitebooks.com/cloud-computing-using-oracle-application-express-2/
+http://www.allitebooks.com/git-best-practices-guide/
+http://www.allitebooks.com/deploying-raspberry-pi-in-the-classroom-2/
