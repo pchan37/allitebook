@@ -10,9 +10,10 @@ Script to download books from www.allitebooks.com
 Changelog
 ---------
 
-Version 0.1.2
-^^^^^^^^^^^^^
+Version 0.1.2 (in progress)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 * Features the usage of a blacklist to skip certain links
+* Features the ability to save progress when encountering AssertionErrors before crashing
 
 Version 0.1.1
 ^^^^^^^^^^^^^

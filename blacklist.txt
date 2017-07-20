@@ -1,1 +1,2 @@
 http://www.allitebooks.com/building-isomorphic-javascript-apps/
+http://www.allitebooks.com/cloud-computing-using-oracle-application-express-2/

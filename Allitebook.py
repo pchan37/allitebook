@@ -69,7 +69,7 @@ class AllitebookDownloader(object):
                 blacklist = map(str.strip, file_content)
         return blacklist
 
-    def _save_progress(self, signum, frame):
+    def _save_progress(self, *args):
         """
         Save the current progress and terminate the program
 
@@ -77,8 +77,9 @@ class AllitebookDownloader(object):
         the configuration file, and terminate the program.
 
         Args:
-            signum (int) : the number associated with the triggered signal
-            frame (str): the stack frame when the signal was triggered
+            *args: normally signum and frame, but might also have no value
+                signum (int) : the number associated with the triggered signal
+                frame (str): the stack frame when the signal was triggered
 
         Returns:
 
@@ -87,7 +88,8 @@ class AllitebookDownloader(object):
             print 'Saving progress...'
             self.config.save()
             print 'Terminated...'
-            raise SystemExit(0)
+            if len(args):
+                raise SystemExit(0)
 
     def _get_adjusted_total_pages(self, homepage):
         """
@@ -117,6 +119,31 @@ class AllitebookDownloader(object):
         self.config.set('total_pages', total_pages)
 
         return adjusted_pages_count
+
+    def _retrieve_book_info(self, book_link):
+        """
+        Retrieve the book category, pdf downlooad link, and book excerpt
+
+        Attempt to retrieve the book category, pdf download link, and book excerpt.  Upon
+        failure, catch the AssertionError, save current progress, and then raise
+        AssertionError again.
+
+        Args:
+            book_link (str): the link for a particular book
+
+        Returns:
+            tuple: category of the book, download link, and book excerpt
+
+        Raises:
+            AssertionError: Occurs when the condition asserted is False, should never happen
+        """
+        try:
+            book_info_extracter = BookInfoExtracter.BookInfoExtracter(book_link)
+            category, pdf_download_link, summary = book_info_extracter.get_book_info()
+            return category, pdf_download_link, summary
+        except AssertionError:
+            self._save_progress()
+            raise
 
     def get_list_of_books_page(self, page):
         """
@@ -201,8 +228,7 @@ class AllitebookDownloader(object):
         Returns:
 
         """
-        book_info_extracter = BookInfoExtracter.BookInfoExtracter(book_link)
-        category, pdf_download_link, summary = book_info_extracter.get_book_info()
+        category, pdf_download_link, summary = self._retrieve_book_info(book_link)
         pdf_file_content = web.download_page(pdf_download_link)
         book_filename = self.get_path_to_save_file(category, pdf_download_link)
         summary_filename = book_filename[:book_filename.rfind('.pdf')] + '.txt'

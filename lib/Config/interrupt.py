@@ -80,10 +80,13 @@ def assert_extended(condition, assert_message='', function=None):
         condition (bool): the condition to test when asserting
         assert_message (str, optional): the message to print when the assertion fails, defaults to
             empty string
-        function (func, optional): the function to run if the, defaults to None
+        function (func, optional): the function to run if the assertion fails (should not take
+            any arguments), defaults to None
 
     Returns:
 
+    Raises:
+        AssertionError: Occurs when the condition asserted is False, should never happen
     """
     try:
         if assert_message:
