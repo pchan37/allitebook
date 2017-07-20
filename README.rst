@@ -23,6 +23,7 @@ Version 0.1.1
 Version 0.1
 ^^^^^^^^^^^
 * Features a downloading engine that starts from the last page and work its way to the beginning
+
   * Download the book in pdf format
   * Scrap the book description and save it as a .txt file
   * Scrap the book category and save both files in that folder
