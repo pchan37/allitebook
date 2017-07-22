@@ -45,7 +45,7 @@ class AllitebookDownloader(object):
         config = Config.Config('Allitebook.ini')
         config.set_default_value('url', None)
         config.set_default_value('query', None)
-        config.set_default_value('processed_pages', 0)
+        config.set_default_value('current_pages', 0)
         config.set_default_value('total_pages', None)
         return config
 
@@ -114,7 +114,7 @@ class AllitebookDownloader(object):
         end_index = page_content.find('<', begin_index)
 
         total_pages = int(page_content[begin_index:end_index])
-        adjusted_pages_count = total_pages - self.config.get('processed_pages')
+        adjusted_pages_count = total_pages - self.config.get('total_pages') + self.config.get('current_pages')
         self.config.set('total_pages', total_pages)
 
         return adjusted_pages_count
@@ -260,7 +260,9 @@ class AllitebookDownloader(object):
                     continue
                 print book_page
                 self.process_book_link(book_page)
-            self.config.set('processed_pages', self.config.get('processed_pages') + 1)
+            self.config.set('current_pages', page_number)
+        print 'Done!'
+        self._save_progress()
 
 
 def main():

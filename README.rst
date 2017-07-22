@@ -33,7 +33,13 @@ Changelog
 Version 0.1.2 (in progress)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 * Features the usage of a blacklist to skip certain links
-* Features the ability to save progress when encountering AssertionErrors before crashing
+* Fixed bugs when saving progress
+
+  * AssertionError causes the program to crash before it has saved current progress
+  * Progress was not saved when the program finished
+* Fixed bug when determining the adjusted page to start on
+
+  * Miscalculation lead to an off-by-one error
 
 Version 0.1.1
 ^^^^^^^^^^^^^
