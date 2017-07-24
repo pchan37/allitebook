@@ -46,7 +46,7 @@ class AllitebookDownloader(object):
         config.set_default_value('url', None)
         config.set_default_value('query', None)
         config.set_default_value('current_pages', 0)
-        config.set_default_value('total_pages', None)
+        config.set_default_value('total_pages', 0)
         return config
 
     def _initialize_blacklist(self):
