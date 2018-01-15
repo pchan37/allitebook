@@ -1,4 +1,5 @@
 import os
+import re
 import signal
 from io import OpenWrapper
 
@@ -104,16 +105,13 @@ class AllitebookDownloader(object):
         Returns:
             int: the total number of pages
         """
-        MARKER = 'title="Last Page'
-
         page_content = web.get_source(homepage)
-        marker_index = page_content.find(MARKER)
-        assert_message = 'Marker for finding total number of pages is not found!'
-        interrupt.assert_extended(marker_index != -1, assert_message, self._save_progress)
-        begin_index = page_content.find('>', marker_index) + 1
-        end_index = page_content.find('<', begin_index)
 
-        total_pages = int(page_content[begin_index:end_index])
+        total_pages_match = re.search('title="Last Page.*>(\d+)<', page_content)
+        assert_message = 'Marker for finding total number of pages is not found!'
+        interrupt.assert_extended(total_pages_match is not None, assert_message, self._save_progress)
+
+        total_pages = int(total_pages_match.group(1))
         adjusted_pages_count = total_pages - self.config.get('total_pages') + self.config.get('current_pages')
         self.config.set('total_pages', total_pages)
 
@@ -163,20 +161,21 @@ class AllitebookDownloader(object):
 
         list_of_books_page = []
         page_content = web.get_source(page)
-        marker_index = page_content.find(BOOK_SECTION_MARKER)
-        assert_message = 'Marker for finding book section not found!'
-        interrupt.assert_extended(marker_index != -1, assert_message, self._save_progress)
 
-        while marker_index != -1:
-            beginning_marker_index = page_content.find(HTML_LINK_TAG, marker_index)
-            assert_message = 'Marker for finding book link not found!'
-            interrupt.assert_extended(beginning_marker_index != -1, assert_message, self._save_progress)
-            begin_index = beginning_marker_index + len(HTML_LINK_TAG)
-            end_index = page_content.find('"', begin_index)
+        book_section_pattern = re.compile(BOOK_SECTION_MARKER)
+        book_section_match = book_section_pattern.search(page_content)
+        book_section_assert_message = 'Marker for finding book section not found!'
+        book_page_assert_message = 'Marker for finding book link not found!'
 
-            link = page_content[begin_index:end_index]
-            list_of_books_page.append(str(link))
-            marker_index = page_content.find(BOOK_SECTION_MARKER, end_index)
+        book_page_pattern = re.compile('<a href="(.+?)"')
+        while interrupt.assert_extended(book_section_match is not None, book_section_assert_message, self._save_progress):
+            book_section_start_index = book_section_match.start()
+            book_page_match = book_page_pattern.search(page_content, marker_index)
+
+            interrupt.assert_extended(book_page_match is not None, book_page_assert_message, self._save_progress)
+            link = str(book_page_match.group(1))
+            list_of_books_page.append(link)
+            book_section_match = book_section_pattern.search(page_content, book_page_match.end())
 
         list_of_books_page.reverse()
         try:

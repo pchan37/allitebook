@@ -20,11 +20,11 @@ the following commands:
 
 .. code-block:: bash
 
-   $ virtualenv allitebook
-   $ source allitebook/bin/activate
+   $ virtualenv allitebook_venv
+   $ source allitebook_venv/bin/activate
    $ git clone https://www.github.com/pchan37/allitebook
    $ cd allitebook
-   $ pip install requirements.txt
+   $ pip install -r requirements.txt
    $ python Allitebook.py
 
 Changelog

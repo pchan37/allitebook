@@ -84,6 +84,7 @@ def assert_extended(condition, assert_message='', function=None):
             any arguments), defaults to None
 
     Returns:
+        bool: True if the assertion can be made
 
     Raises:
         AssertionError: Occurs when the condition asserted is False, should never happen
@@ -93,6 +94,7 @@ def assert_extended(condition, assert_message='', function=None):
             assert condition, assert_message
         else:
             assert condition
+        return True
     except AssertionError:
         if function:
             function()
