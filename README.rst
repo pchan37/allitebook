@@ -1,6 +1,8 @@
 Allitebook
 ==========
 
+Note: This project is no longer being maintained in favor of `bore<https://github.com/PGo-Projects/bore>`_.
+
 .. contents::
 
 Project Description
